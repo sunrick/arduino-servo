@@ -28,7 +28,7 @@ Or this:
 
 `gort arduino upload firmata /dev/cu.usbmodem1411`
 
-Change `connection :arduino, adaptor: :firmata, port: '/dev/cu.usbmodem1411'` to whatever port is right. Again `.cu` worked for me.
+Change `connection :arduino, adaptor: :firmata, port: '/dev/cu.usbmodem1411'` to whatever port is right. Again `cu` worked for me.
 
 
 ### Run the project
