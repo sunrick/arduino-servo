@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Arduino fun</title>
+  <script
+  src="https://code.jquery.com/jquery-3.1.1.min.js"
+  integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+  crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.3.2/css/bulma.min.css" />
+  <style>
+    .input {
+      font-size: 36px;
+      text-align: center;
+      width: 120px;
+      display: block;
+      margin: 0 auto;
+    }
+    .button {
+      font-size: 36px;
+      width: 120px;
+      display: block;
+      margin: 10px auto;
+    }
+    .title {
+      margin-top: 2rem;
+    }
+  </style>
+</head>
+<body>
+  <section class="hero is-info is-fullheight">
+    <div class="hero-head has-text-centered">
+      <h1 class="title is-3"> Arduino Servo Controller </h1>
+    </div>
+    <div class="hero-body">
+      <div class="container">
+        <button class="button is-info is-inverted is-outlined">+10</button>
+        <input class="input is-info" name="angle" type="text" value="30" max="150" min="30">
+        <button class="button is-info is-inverted is-outlined">-10</button>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    $('input').on('change', function(){
+      var self = $(this);
+      var val = self.val();
+      if (val >= 30 && val <= 150) {
+        postAngle(val)
+      } else {
+        if ( val > 150) {
+          self.val(150);
+          postAngle(150);
+        } else if (val < 30) {
+          self.val(30);
+          postAngle(30);
+        }
+      }
+    });
+
+    $('button').on('click', function(e){
+      e.preventDefault();
+
+      var self = $(this);
+      self.blur();
+
+      var val = parseInt($('input').val());
+      var newVal;
+
+      if (self.text() === '+10') {
+        var newVal = val + 10;
+      } else {
+        var newVal = val - 10;
+      }
+
+      if (newVal >= 30 && newVal <= 150) {
+        $('input').val(newVal);
+        postAngle(newVal);
+      } else {
+        newVal = val;
+      }
+
+    });
+
+    function postAngle(val) {
+      var request = $.ajax({
+        method: 'POST',
+        url: '/angle',
+        data: { angle: val }
+      });
+
+      request.done(function(data){
+        console.log('success!');
+      });
+    }
+
+    $('form').on('submit', function(e){
+      e.preventDefault();
+    });
+
+  </script>
+
+</body>
+</html>
+
